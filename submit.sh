@@ -50,7 +50,7 @@ done
 
 geom=$(<$gpath)
 
-cat > pwscf_$name.in << EOF
+cat > pwscf_${name}.in << EOF
 &CONTROL
   calculation = 'scf'
   etot_conv_thr =   2.4000000000d-03
@@ -89,7 +89,7 @@ K_POINTS automatic
 $k $k 1 0 0 0
 EOF
 
-cat > task_$name_cpu$cpu << EOF
+cat > task_${name}_cpu${cpu} << EOF
 #!/usr/bin/env bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=$cpu
@@ -100,9 +100,9 @@ cat > task_$name_cpu$cpu << EOF
 module purge
 module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 
-mpirun --bind-to core -np $cpu pw.x -inp pwscf_$name.in > pwscf_$name_cpu$cpu.out
+mpirun --bind-to core -np $cpu pw.x -inp pwscf_${name}.in > pwscf_${name}_cpu${cpu}.out
 EOF
 
-echo "" > "pwscf_$name_cpu$cpu.out"
-sbatch task_$name_cpu$cpu
-tail -f "pwscf_$name_cpu$cpu.out"
+echo "" > "pwscf_${name}_cpu${cpu}.out"
+sbatch task_${name}_cpu${cpu}
+tail -f "pwscf_${name}_cpu${cpu}.out"
