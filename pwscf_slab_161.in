@@ -9,8 +9,8 @@
 /
 &SYSTEM
   degauss =   2.2049585400d-02
-  ecutrho =   3.6000000000d+02
-  ecutwfc =   5.0000000000d+01
+  ecutrho = 480
+  ecutwfc = 60
   ibrav = 0
   nat = 161
   nosym = .false.
@@ -198,4 +198,4 @@ CELL_PARAMETERS angstrom
       0.0000000000      37.2892583937       0.0000000000
       0.0000000000       0.0000000000      18.0000000000
 K_POINTS automatic
-  1 0 0 0
+3 3 1 0 0 0

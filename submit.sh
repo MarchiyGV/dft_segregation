@@ -6,6 +6,8 @@ nat=161
 mixing_mode="'local-TF'"
 beta=4.0d-01
 k=3
+ecutwfc=50
+ecut_k=8
 
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
@@ -23,6 +25,12 @@ elif [ "$1" = "--nbnd" ]; then
     shift 2
 elif [ "$1" = "--beta" -o "$1" = "-b" ]; then
     beta=$2
+    shift 2
+elif [ "$1" = "--ecutwfc" ]; then
+    ecutwfc=$2
+    shift 2
+elif [ "$1" = "--ecutrho-to-wfc" ]; then
+    ecut_k=$2
     shift 2
 elif [ "$1" = "--mixing_mode" ]; then
     mixing_mode=$2
@@ -47,7 +55,19 @@ else
 fi
 done
 
+if [ -f "pwscf_${name}_cpu${cpu}.out" ]; then
+    read -p "Output exists, do you want to continue? " -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        echo "Ok"
+    else
+        exit 0
+    fi
+fi
 
+ecutrho=$((ecut_k*ecutwfc))
+echo $ecutrho
 geom=$(<$gpath)
 
 cat > pwscf_${name}.in << EOF
@@ -62,8 +82,8 @@ cat > pwscf_${name}.in << EOF
 /
 &SYSTEM
   degauss =   2.2049585400d-02
-  ecutrho =   3.6000000000d+02
-  ecutwfc =   5.0000000000d+01
+  ecutrho = ${ecutrho}
+  ecutwfc = ${ecutwfc}
   ibrav = 0
   nat = $nat
   nosym = .false.
