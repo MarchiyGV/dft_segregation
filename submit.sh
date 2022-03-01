@@ -103,6 +103,6 @@ module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 mpirun --bind-to core -np $cpu pw.x -inp pwscf_$name.in > pwscf_$name_cpu$cpu.out
 EOF
 
-touch "pwscf_$name_cpu$cpu.out"
+echo "" > "pwscf_$name_cpu$cpu.out"
 sbatch task_$name_cpu$cpu
 tail -f "pwscf_$name_cpu$cpu.out"
