@@ -26,6 +26,9 @@ elif [ "$1" = "--nbnd" ]; then
 elif [ "$1" = "--beta" -o "$1" = "-b" ]; then
     beta=$2
     shift 2
+elif [ "$1" = "--run" ]; then
+    run=true
+    shift 1
 elif [ "$1" = "--ecutwfc" ]; then
     ecutwfc=$2
     shift 2
@@ -109,6 +112,8 @@ K_POINTS automatic
 $k $k 1 0 0 0
 EOF
 
+echo "write pwscf_${name}.in"
+
 cat > task_${name}_cpu${cpu} << EOF
 #!/usr/bin/env bash
 #SBATCH --nodes=1
@@ -123,6 +128,18 @@ module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 mpirun --bind-to core -np $cpu pw.x -inp pwscf_${name}.in > pwscf_${name}_cpu${cpu}.out
 EOF
 
-echo "" > "pwscf_${name}_cpu${cpu}.out"
-sbatch task_${name}_cpu${cpu}
+echo "write task_${name}_cpu${cpu}"
+
+cat > read_${name}_cpu${cpu}.sh << EOF
 tail -f "pwscf_${name}_cpu${cpu}.out"
+EOF
+chmod +x read_${name}_cpu${cpu}.sh
+
+echo "write read_${name}_cpu${cpu}.sh"
+
+if [ $run ]; then
+    echo "sbatch task_${name}_cpu${cpu}"
+    echo "" > "pwscf_${name}_cpu${cpu}.out"
+    sbatch task_${name}_cpu${cpu}
+    tail -f "pwscf_${name}_cpu${cpu}.out"
+fi
