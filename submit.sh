@@ -139,7 +139,8 @@ EOF
 chmod +x read_${name}_cpu${cpu}.sh
 
 echo "write read_${name}_cpu${cpu}.sh"
-
+module purge
+module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 if [ $run ]; then
     echo "sbatch task_${name}_cpu${cpu}"
     echo "" > "pwscf_${name}_cpu${cpu}.out"
