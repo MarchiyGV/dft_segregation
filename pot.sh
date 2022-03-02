@@ -1,6 +1,6 @@
 cat > pp.in << EOF
 &INPUTPP
-    prefix='mgo',
+    prefix='161_k3_eb2000_ecut',
     outdir='./out' 
     filplot='pot.dat'
     plot_num=11
