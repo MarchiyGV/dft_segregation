@@ -8,19 +8,23 @@ beta=4.0d-01
 k=3
 ecutwfc=50
 ecut_k=8
+emaxpos=0.7
+eopreg=0.05
 
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "-n --name"
     echo "-g --geom"
-    echo "-a --nat [def = 161]"
-    echo "-c --cpu [def = 90]"
-    echo "-k [def = 3]"
+    echo "-a --nat [def = ${nat}]"
+    echo "-c --cpu [def = ${cpu}]"
+    echo "-k [def = ${k}]"
     echo "--nbnd [def = ""; default from QE]"
-    echo "-b --beta [def = 0.4]"
-    echo "--mixing_mode [def = 'local-TF']"
-    echo "--ecutrho-to-wfc [def = 8]"
-    echo "--ecutwfc [def = 50]"
+    echo "-b --beta [def = ${beta}]"
+    echo "--mixing_mode [def = ${mixing_mode}]"
+    echo "--ecutrho-to-wfc [def = ${ecut_k}]"
+    echo "--ecutwfc [def = ${ecutwfc}]"
+    echo "--emaxpos [def = ${emaxpos}]"
+    echo "--eopreg [def = ${eopreg}]"
     echo "--run [flag]"
     exit 0;
 elif [ "$1" = "--nbnd" ]; then
@@ -56,6 +60,12 @@ elif [ "$1" = "--cpu" -o "$1" = "-c" ]; then
 elif [ "$1" = "-k" ]; then
     k=$2
     shift 2
+elif [ "$1" = "--emaxpos" ]; then
+    emaxpos=$2
+    shift 2
+elif [ "$1" = "--eopreg" ]; then
+    eopreg=$2
+    shift 2
 else
     break
 fi
@@ -85,6 +95,8 @@ cat > pwscf_${name}.in << EOF
   prefix = '$name'
   pseudo_dir = './pseudo/'
   verbosity = 'high'
+  tefield = .true.
+  dipfield = .true.
 /
 &SYSTEM
   degauss =   2.2049585400d-02
@@ -100,6 +112,10 @@ cat > pwscf_${name}.in << EOF
   starting_magnetization(1) =   1.0000000000d-01
   starting_magnetization(2) =   2.7777777778d-01
   $nbnd
+  eamp        = 0.0
+  edir        = 3
+  emaxpos     = $emaxpos 
+  eopreg      = $eopreg
 /
 &ELECTRONS
   conv_thr =   3.2200000000d-08
