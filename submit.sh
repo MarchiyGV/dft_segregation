@@ -19,6 +19,9 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "--nbnd [def = ""; default from QE]"
     echo "-b --beta [def = 0.4]"
     echo "--mixing_mode [def = 'local-TF']"
+    echo "--ecutrho-to-wfc [def = 8]"
+    echo "--ecutwfc [def = 50]"
+    echo "--run [flag]"
     exit 0;
 elif [ "$1" = "--nbnd" ]; then
     nbnd="nbnd = $2"
