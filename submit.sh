@@ -3,7 +3,7 @@
 nbnd=""
 cpu=90
 nat=161
-mixing_mode="'local-TF'"
+mixing_mode="local-TF"
 beta=4.0d-01
 k=3
 ecutwfc=50
@@ -71,7 +71,7 @@ else
 fi
 done
 
-if [ -f "pwscf_${name}_cpu${cpu}.out" ]; then
+if [ -f "${name}/pwscf_cpu${cpu}.out" ]; then
     read -p "Output exists, do you want to continue? " -n 1 -r
     echo    # (optional) move to a new line
     if [[ $REPLY =~ ^[Yy]$ ]]
@@ -86,7 +86,9 @@ ecutrho=$((ecut_k*ecutwfc))
 echo $ecutrho
 geom=$(<$gpath)
 
-cat > pwscf_${name}.in << EOF
+mkdir ${name}
+
+cat > ${name}/pwscf.in << EOF
 &CONTROL
   calculation = 'scf'
   etot_conv_thr =   2.4000000000d-03
@@ -120,7 +122,7 @@ cat > pwscf_${name}.in << EOF
 &ELECTRONS
   conv_thr =   3.2200000000d-08
   electron_maxstep = 80
-  mixing_mode = $mixing_mode
+  mixing_mode = '${mixing_mode}'
   mixing_beta = $beta
 /
 ATOMIC_SPECIES
@@ -133,7 +135,7 @@ EOF
 
 echo "write pwscf_${name}.in"
 
-cat > task_${name}_cpu${cpu} << EOF
+cat > ${name}/task_cpu${cpu} << EOF
 #!/usr/bin/env bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=$cpu
@@ -141,25 +143,27 @@ cat > task_${name}_cpu${cpu} << EOF
 #SBATCH --mail-type=begin        # send email when job begins
 #SBATCH --mail-type=end          # send email when job ends
 #SBATCH --mail-user=georgiy.marchiy@mail.ioffe.ru
+
 module purge
 module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 
-mpirun --bind-to core -np $cpu pw.x -inp pwscf_${name}.in > pwscf_${name}_cpu${cpu}.out
+mpirun --bind-to core -np $cpu pw.x -inp pwscf.in > pwscf_cpu${cpu}.out
 EOF
 
-echo "write task_${name}_cpu${cpu}"
+echo "write ${name}/task_cpu${cpu}"
 
-cat > read_${name}_cpu${cpu}.sh << EOF
-tail -f "pwscf_${name}_cpu${cpu}.out"
+cat > ${name}/read_cpu${cpu}.sh << EOF
+tail -f "pwscf_cpu${cpu}.out"
 EOF
-chmod +x read_${name}_cpu${cpu}.sh
+chmod +x ${name}/read_cpu${cpu}.sh
 
-echo "write read_${name}_cpu${cpu}.sh"
+echo "write ${name}/read_cpu${cpu}.sh"
 module purge
 module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 if [ $run ]; then
-    echo "sbatch task_${name}_cpu${cpu}"
-    echo "" > "pwscf_${name}_cpu${cpu}.out"
-    sbatch task_${name}_cpu${cpu}
-    tail -f "pwscf_${name}_cpu${cpu}.out"
+    cd $name
+    echo "sbatch task_cpu${cpu}"
+    echo "" > "pwscf_cpu${cpu}.out"
+    sbatch task_cpu${cpu}
+    tail -f "pwscf_cpu${cpu}.out"
 fi
