@@ -35,7 +35,8 @@ echo run
 pp.x <pp.in
 average.x <average.in
 
-mv ${name}.pot.dat ./out/${name}.pot.dat
-mv avg.dat ./out/${name}.pot_avg.dat
-echo "output in ./out/${name}.pot_avg.dat and ./out/${name}.pot.dat"
+mv ${name}.pot.dat ./out/${name}.save/pot.dat
+mv avg.dat ./out/${name}.save/pot_avg.dat
+
+echo "output in ./out/${name}.save/pot_avg.dat and ./out/${name}.save/pot.dat"
 rm average.in pp.in
