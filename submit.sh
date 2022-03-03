@@ -93,9 +93,9 @@ cat > ${name}/pwscf.in << EOF
   calculation = 'scf'
   etot_conv_thr =   2.4000000000d-03
   forc_conv_thr =   1.0000000000d-04
-  outdir = './out/'
+  outdir = '../out/'
   prefix = '$name'
-  pseudo_dir = './pseudo/'
+  pseudo_dir = '../pseudo/'
   verbosity = 'high'
   tefield = .true.
   dipfield = .true.
