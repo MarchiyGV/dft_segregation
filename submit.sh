@@ -8,8 +8,9 @@ beta=4.0d-01
 k=3
 ecutwfc=50
 ecut_k=8
-emaxpos=0.7
-eopreg=0.05
+emaxpos_val=0.7
+eopreg_val=0.05
+
 
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
@@ -61,11 +62,16 @@ elif [ "$1" = "-k" ]; then
     k=$2
     shift 2
 elif [ "$1" = "--emaxpos" ]; then
-    emaxpos=$2
+    emaxpos_val=$2
+    dpcorr=true
     shift 2
 elif [ "$1" = "--eopreg" ]; then
-    eopreg=$2
+    eopreg_val=$2
+    dpcorr=true
     shift 2
+elif [ "$1" = "--dpcorr" ]; then
+    dpcorr=true
+    shift 1
 else
     break
 fi
@@ -82,6 +88,22 @@ if [ -f "${name}/pwscf_cpu${cpu}.out" ]; then
     fi
 fi
 
+if [ $dpcorr ]; then
+    tefield="tefield=.true."
+    dipfield="dipfield=.true."
+    eamp="eamp=0.0"
+    edir="edir=3"
+    emaxpos="emaxpos=$emaxpos_val"
+    eopreg="eopreg=$eopreg_val"
+else
+    tefield="tefield=.false."
+    dipfield="dipfield=.false."
+    eamp=""
+    edir=""
+    emaxpos=""
+    eopreg=""
+fi 
+
 ecutrho=$((ecut_k*ecutwfc))
 echo $ecutrho
 geom=$(<$gpath)
@@ -97,8 +119,8 @@ cat > ${name}/pwscf.in << EOF
   prefix = '$name'
   pseudo_dir = '../pseudo/'
   verbosity = 'high'
-  tefield = .true.
-  dipfield = .true.
+  $tefield
+  $dipfield
 /
 &SYSTEM
   degauss =   2.2049585400d-02
@@ -114,10 +136,10 @@ cat > ${name}/pwscf.in << EOF
   starting_magnetization(1) =   1.0000000000d-01
   starting_magnetization(2) =   2.7777777778d-01
   $nbnd
-  eamp        = 0.0
-  edir        = 3
-  emaxpos     = $emaxpos 
-  eopreg      = $eopreg
+  $eamp
+  $edir   
+  $emaxpos    
+  $eopreg  
 /
 &ELECTRONS
   conv_thr =   3.2200000000d-08
