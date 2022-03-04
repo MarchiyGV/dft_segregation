@@ -28,7 +28,7 @@ echo $list
 
 for path in $list
 do
-if [[ -d $path ]]; then
+if [[ -d ${path%":"} ]]; then
 echo "path: $path"
 name=${path%".save:"}
 name=${name#"out/"}
