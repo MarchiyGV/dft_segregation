@@ -62,6 +62,7 @@ mv avg.dat ./out/${name}.save/pot_avg.dat
 
 echo "output in ./out/${name}.save/pot_avg.dat and ./out/${name}.save/pot.dat"
 rm average.in pp.in
-
+else
+    echo "$path not a dir"
 fi
 done
