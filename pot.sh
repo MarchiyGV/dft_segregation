@@ -16,10 +16,12 @@ else
 fi
 done
 
+
 for path in /out/*.save
+echo $path
 name=${path%".save"}
 name=${path#"/out/"}
-
+echo $name
 cat > pp.in << EOF
 &INPUTPP
     prefix='${name}',
