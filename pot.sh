@@ -22,7 +22,7 @@ for path in `ls out/*.save`
 do
 echo $path
 name=${path%".save"}
-name=${path#"out/"}
+name=${name#"out/"}
 echo $name
 cat > pp.in << EOF
 &INPUTPP
