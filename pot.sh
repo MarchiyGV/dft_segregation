@@ -18,6 +18,7 @@ done
 
 
 for path in /out/*.save
+do
 echo $path
 name=${path%".save"}
 name=${path#"/out/"}
