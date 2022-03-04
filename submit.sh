@@ -26,6 +26,8 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "--ecutwfc [def = ${ecutwfc}]"
     echo "--emaxpos [def = ${emaxpos}]"
     echo "--eopreg [def = ${eopreg}]"
+    echo "--dpcorr"
+    echo "--magnetic"
     echo "--run [flag]"
     exit 0;
 elif [ "$1" = "--nbnd" ]; then
@@ -72,6 +74,9 @@ elif [ "$1" = "--eopreg" ]; then
 elif [ "$1" = "--dpcorr" ]; then
     dpcorr=true
     shift 1
+elif [ "$1" = "--magnetic" ]; then
+    magnetism=true
+    shift 1
 else
     break
 fi
@@ -104,6 +109,14 @@ else
     eopreg=""
 fi 
 
+if [ $magnetism ]; then
+  mag1="starting_magnetization(1) = 0.1"
+  mag2="starting_magnetization(2) = 0.2778"
+else
+  mag1=""
+  mag2=""
+fi
+
 ecutrho=$((ecut_k*ecutwfc))
 echo $ecutrho
 geom=$(<$gpath)
@@ -133,8 +146,8 @@ cat > ${name}/pwscf.in << EOF
   ntyp = 2
   occupations = 'smearing'
   smearing = 'cold'
-  starting_magnetization(1) =   1.0000000000d-01
-  starting_magnetization(2) =   2.7777777778d-01
+  ${mag1}
+  ${mag2}
   $nbnd
   $eamp
   $edir   
