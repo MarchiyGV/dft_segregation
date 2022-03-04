@@ -21,7 +21,7 @@ module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 for path in `ls out/*.save`
 do
 echo $path
-name=${path%".save"}
+name=${path%".save:"}
 name=${name#"out/"}
 echo $name
 cat > pp.in << EOF
