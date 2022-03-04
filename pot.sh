@@ -28,9 +28,7 @@ echo $list
 
 for path in $list
 do
-if [[ -f $path ]]; then
-    continue
-fi
+if [[ -d $path ]]; then
 echo "path: $path"
 name=${path%".save:"}
 name=${name#"out/"}
@@ -65,4 +63,5 @@ mv avg.dat ./out/${name}.save/pot_avg.dat
 echo "output in ./out/${name}.save/pot_avg.dat and ./out/${name}.save/pot.dat"
 rm average.in pp.in
 
+fi
 done
