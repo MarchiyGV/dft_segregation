@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-name=161_k3_eb2000_ecut
+cpu=10
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "-n --name"
@@ -8,6 +7,9 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
     exit 0;
 elif [ "$1" = "--name" -o "$1" = "-n" ]; then
     name=$2
+    shift 2
+elif [ "$1" = "--job" -o "$1" = "-j" ]; then
+    cpu=$2
     shift 2
 elif [ "$1" = "--all" -o "$1" = "-a" ]; then
     all=true
@@ -54,8 +56,8 @@ ${name}.pot.dat
 EOF
 
 echo run
-pp.x <pp.in
-average.x <average.in
+mpirun -np ${cpu} pp.x -inp pp.in
+mpirun -np ${cpu} average.x -inp average.in
 
 mv ${name}.pot.dat ./out/${name}.save/pot.dat
 mv avg.dat ./out/${name}.save/pot_avg.dat
