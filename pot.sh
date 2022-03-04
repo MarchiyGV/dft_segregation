@@ -15,9 +15,10 @@ else
     break
 fi
 done
+module purge
+module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 
-
-for path in /out/*.save
+for path in `ls /out/*.save`
 do
 echo $path
 name=${path%".save"}
