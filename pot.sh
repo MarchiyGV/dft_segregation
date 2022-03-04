@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cpu=10
+cpu=1
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "-n --name"
@@ -57,14 +57,13 @@ EOF
 
 echo run
 mpirun -np ${cpu} pp.x -inp pp.in
-mpirun -np ${cpu} average.x -inp average.in
+average.x -inp average.in
 
 mv ${name}.pot.dat ./out/${name}.save/pot.dat
 mv avg.dat ./out/${name}.save/pot_avg.dat
 
 echo "output in ./out/${name}.save/pot_avg.dat and ./out/${name}.save/pot.dat"
 rm average.in pp.in
-else
-    echo "$path not a dir"
+
 fi
 done
