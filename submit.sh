@@ -112,9 +112,11 @@ fi
 if [ $magnetism ]; then
   mag1="starting_magnetization(1) = 0.1"
   mag2="starting_magnetization(2) = 0.2778"
+  nspin="nspin = 2"
 else
   mag1=""
   mag2=""
+  nspin=""
 fi
 
 ecutrho=$((ecut_k*ecutwfc))
@@ -142,7 +144,7 @@ cat > ${name}/pwscf.in << EOF
   ibrav = 0
   nat = $nat
   nosym = .false.
-  nspin = 2
+  ${nspin}
   ntyp = 2
   occupations = 'smearing'
   smearing = 'cold'
