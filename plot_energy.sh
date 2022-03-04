@@ -14,6 +14,12 @@ elif [ "$1" = "--prefix" -o "$1" = "-p" ]; then
 elif [ "$1" = "--suffix" -o "$1" = "-s" ]; then
     suffix=$2
     shift 2
+elif [ "$1" = "-x" ]; then
+    x=$2
+    shift 2
+elif [ "$1" = "-y" ]; then
+    y=$2
+    shift 2
 elif [ "$1" = "--outsuffix" -o "$1" = "-c" ]; then
     outsuffix=$2
     shift 2
