@@ -4,6 +4,7 @@ name=161_k3_eb2000_ecut
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "-n --name"
+    echo "-a -all"
     exit 0;
 elif [ "$1" = "--name" -o "$1" = "-n" ]; then
     name=$2
@@ -18,12 +19,21 @@ done
 module purge
 module load intel libraries/mkl intel-mpich/scalapack intel/mpich
 
-for path in `ls out/*.save`
+if [ $all ]; then
+    list=`ls out/*.save`
+else
+    list="out/${name}.save:"
+fi
+echo $list
+
+for path in $list
 do
-echo $path
+echo "path: $path"
 name=${path%".save:"}
 name=${name#"out/"}
-echo $name
+echo "name: $name"
+
+
 cat > pp.in << EOF
 &INPUTPP
     prefix='${name}',
