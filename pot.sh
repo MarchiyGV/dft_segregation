@@ -8,10 +8,17 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
 elif [ "$1" = "--name" -o "$1" = "-n" ]; then
     name=$2
     shift 2
+elif [ "$1" = "--all" -o "$1" = "-a" ]; then
+    all=true
+    shift 1
 else
     break
 fi
 done
+
+for path in /out/*.save
+name=${path%".save"}
+name=${path#"/out/"}
 
 cat > pp.in << EOF
 &INPUTPP
@@ -40,3 +47,5 @@ mv avg.dat ./out/${name}.save/pot_avg.dat
 
 echo "output in ./out/${name}.save/pot_avg.dat and ./out/${name}.save/pot.dat"
 rm average.in pp.in
+
+done
