@@ -33,4 +33,5 @@ do
 echo "${prefix}${name}${suffix}"
 echo `grep -e ${x} ${prefix}${name}${suffix}.in`
 echo `grep -e ${y} ${prefix}${name}${suffix}${outsuffix}.out`
+grep -e ${y} ${prefix}${name}${suffix}${outsuffix}.out | awk '/l e/{e=$(NF-1)}/ scf /{print e, $(NF-1)}' > SCF
 done
