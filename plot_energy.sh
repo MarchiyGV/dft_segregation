@@ -2,8 +2,8 @@
 
 prefix=""
 suffix=""
-outsuffix="_cpu90"
-y="!"
+outsuffix=_cpu90
+y=!
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "-n --name"
@@ -31,6 +31,6 @@ done
 for name in $@
 do 
 echo "${prefix}${name}${suffix}"
-echo `grep -e '${x}' ${prefix}${name}${suffix}.in`
-echo `grep -e '${y}' ${prefix}${name}${suffix}${outsuffix}.out`
+echo `grep -e ${x} ${prefix}${name}${suffix}.in`
+echo `grep -e ${y} ${prefix}${name}${suffix}${outsuffix}.out`
 done
