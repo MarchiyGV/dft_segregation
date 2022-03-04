@@ -28,6 +28,9 @@ echo $list
 
 for path in $list
 do
+if [[ -f $path ]]; then
+    continue
+fi
 echo "path: $path"
 name=${path%".save:"}
 name=${name#"out/"}
