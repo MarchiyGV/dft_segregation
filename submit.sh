@@ -10,6 +10,7 @@ ecutwfc=50
 ecut_k=8
 emaxpos_val=0.7
 eopreg_val=0.05
+task=scf
 
 
 while [ True ]; do
@@ -26,6 +27,7 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "--ecutwfc [def = ${ecutwfc}]"
     echo "--emaxpos [def = ${emaxpos}]"
     echo "--eopreg [def = ${eopreg}]"
+    echo "--task [def = ${task}]"
     echo "--dpcorr"
     echo "--magnetic"
     echo "--run [flag]"
@@ -70,6 +72,9 @@ elif [ "$1" = "--emaxpos" ]; then
 elif [ "$1" = "--eopreg" ]; then
     eopreg_val=$2
     dpcorr=true
+    shift 2
+elif [ "$1" = "--task" ]; then
+    task=$2
     shift 2
 elif [ "$1" = "--dpcorr" ]; then
     dpcorr=true
@@ -127,7 +132,7 @@ mkdir ${name}
 
 cat > ${name}/pwscf.in << EOF
 &CONTROL
-  calculation = 'scf'
+  calculation = '${task}'
   etot_conv_thr =   2.4000000000d-03
   forc_conv_thr =   1.0000000000d-04
   outdir = '../out/'
