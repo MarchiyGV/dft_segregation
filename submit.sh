@@ -167,6 +167,9 @@ cat > ${name}/pwscf.in << EOF
   mixing_mode = '${mixing_mode}'
   mixing_beta = $beta
 /
+&IONS
+  ion_dynamics='bfgs'
+/
 ATOMIC_SPECIES
 Ag     107.8682 Ag_ONCV_PBEsol-1.0.upf
 Ni     58.6934 ni_pbesol_v1.4.uspp.F.UPF
