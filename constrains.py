@@ -4,7 +4,8 @@ import pandas as pd
 
 zmobile=0.1
 path='geometries/GB_210/slab_161/'
-file=path+'geometry.txt'
+file=path+'geometry_z23.txt'
+outname='constr_z23.txt'
 
 df = pd.read_csv(file, sep='\s+', engine='python', skiprows=1, 
                  names=['specie', 'x', 'y', 'z'], nrows=161)
@@ -30,7 +31,7 @@ with open(file) as f:
         out+=line_new
                 
 print(out)
-file=path+'constr.txt'
+file=path+outname
 with open(file, 'w') as f:
     f.write(out)
     
