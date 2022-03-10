@@ -163,7 +163,7 @@ cat > ${name}/pwscf.in << EOF
 /
 &ELECTRONS
   conv_thr =   3.2200000000d-08
-  electron_maxstep = 80
+  electron_maxstep = 120
   mixing_mode = '${mixing_mode}'
   mixing_beta = $beta
 /
