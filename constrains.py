@@ -12,6 +12,7 @@ outname='constr_z23.txt'
 if len(sys.argv)>1:
     name=sys.argv[1]
     outname=sys.argv[2]
+    zmobile=sys.argv[3]
 
 file=path+name
 
