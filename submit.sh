@@ -11,7 +11,7 @@ ecut_k=8
 emaxpos_val=0.7
 eopreg_val=0.05
 task=scf
-
+max_seconds=216000
 
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
@@ -30,6 +30,7 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo "--task [def = ${task}]"
     echo "--dpcorr"
     echo "--magnetic"
+    echo "--max-seconds [def 216000] (2.5 days in s)"
     echo "--run [flag]"
     exit 0;
 elif [ "$1" = "--nbnd" ]; then
@@ -82,6 +83,9 @@ elif [ "$1" = "--dpcorr" ]; then
 elif [ "$1" = "--magnetic" ]; then
     magnetism=true
     shift 1
+elif [ "$1" = "--max-seconds" ]; then
+    max_seconds=$2
+    shift 2
 else
     break
 fi
@@ -132,6 +136,7 @@ mkdir ${name}
 
 cat > ${name}/pwscf.in << EOF
 &CONTROL
+  max_seconds = ${max_seconds}
   calculation = '${task}'
   etot_conv_thr =   2.4000000000d-03
   forc_conv_thr =   1.0000000000d-04
