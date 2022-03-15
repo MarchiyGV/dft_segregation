@@ -1,11 +1,19 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
+import sys
 
 zmobile=0.1
 path='geometries/GB_210/slab_161/'
-file=path+'geometry_z23.txt'
+name='geometry_z23.txt'
+
 outname='constr_z23.txt'
+
+if len(sys.argv)>1:
+    name=sys.argv[1]
+    outname=sys.argv[2]
+
+file=path+name
 
 df = pd.read_csv(file, sep='\s+', engine='python', skiprows=1, 
                  names=['specie', 'x', 'y', 'z'], nrows=161)
